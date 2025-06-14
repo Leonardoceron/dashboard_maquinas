@@ -54,60 +54,60 @@ df_filtrado = df[(df['Status'].isin(status_filtrado)) &
 # ===== ABA 1 - Visão Geral =====
 with aba1:
     col1, col2, col3 = st.columns(3)
-    col1.metric("🔧 Total de Máquinas", df_filtrado['ID_Maquina'].nunique())
-    col2.metric("⚠️ Máquinas que precisam de manutenção", df_filtrado[df_filtrado['Necessita_Manutencao'] == 'Sim'].shape[0])
-    col3.metric("📅 Período Analisado", f"{data_filtrada[0]} a {data_filtrada[1]}")
+    col1.metric("Total de Máquinas", df_filtrado['ID_Maquina'].nunique())
+    col2.metric("Máquinas que precisam de manutenção", df_filtrado[df_filtrado['Necessita_Manutencao'] == 'Sim'].shape[0])
+    col3.metric("Período Analisado", f"{data_filtrada[0]} a {data_filtrada[1]}")
 
-    st.subheader("📌 Média dos Sensores por Máquina")
+    st.subheader("Média dos Sensores por Máquina")
     media_por_maquina = df_filtrado.groupby('ID_Maquina')[['Sensor1', 'Sensor2', 'Sensor3']].mean().reset_index()
     st.dataframe(media_por_maquina)
     fig = px.bar(media_por_maquina, x='ID_Maquina', y=['Sensor1', 'Sensor2', 'Sensor3'], barmode='group')
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("🧯 Percentual de Status das Máquinas")
+    st.subheader("Percentual de Status das Máquinas")
     status_percentual = df_filtrado['Status'].value_counts(normalize=True)*100
     fig = px.pie(values=status_percentual.values, names=status_percentual.index, title="Distribuição de Status")
     st.plotly_chart(fig, use_container_width=True)
 
 # ===== ABA 2 - Análises Detalhadas =====
 with aba2:
-    st.subheader("📍 Máquinas que Precisam de Manutenção")
+    st.subheader("Máquinas que Precisam de Manutenção")
     manutencao_df = df_filtrado[df_filtrado['Necessita_Manutencao'] == 'Sim']
     st.dataframe(manutencao_df)
 
-    st.subheader("📈 Distribuição Sensor 1")
+    st.subheader("Distribuição Sensor 1")
     fig, ax = plt.subplots()
     sns.histplot(df_filtrado['Sensor1'], kde=True, bins=30, ax=ax)
     st.pyplot(fig)
 
-    st.subheader("📉 Tempo médio de operação por Status")
+    st.subheader("Tempo médio de operação por Status")
     fig = px.box(df_filtrado, x='Status', y='Tempo_Operacao', color='Status')
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("📊 Relação Sensor1 vs Sensor2")
+    st.subheader("Relação Sensor1 vs Sensor2")
     fig = px.scatter(df_filtrado, x='Sensor1', y='Sensor2', color='Status', hover_data=['ID_Maquina'])
     st.plotly_chart(fig, use_container_width=True)
 
 # ===== ABA 3 - Correlação e Insights =====
 with aba3:
-    st.subheader("📘 Correlação entre Variáveis")
+    st.subheader("Correlação entre Variáveis")
     corr = df_filtrado[['Sensor1', 'Sensor2', 'Sensor3', 'Tempo_Operacao']].corr()
     fig, ax = plt.subplots()
     sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax)
     st.pyplot(fig)
 
-    st.subheader("💡 Insight Adicional")
+    st.subheader("Insight Adicional")
     tendencia = df_filtrado.groupby('Data')[['Sensor1', 'Sensor2']].mean().reset_index()
     fig = px.line(tendencia, x='Data', y=['Sensor1', 'Sensor2'], title="Tendência dos Sensores ao Longo do Tempo")
     st.plotly_chart(fig, use_container_width=True)
 
 # ===== ABA 4 - Download dos Dados =====
 with aba4:
-    st.subheader("📄 Visualização dos Dados Filtrados")
+    st.subheader("Visualização dos Dados Filtrados")
     st.dataframe(df_filtrado)
 
     st.download_button(
-        label="📥 Baixar dados como CSV",
+        label="Baixar dados como CSV",
         data=gerar_download(df_filtrado),
         file_name='dados_maquinas_filtrado.csv',
         mime='text/csv'
