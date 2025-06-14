@@ -34,7 +34,7 @@ def gerar_download(df):
 # Dados
 df = gerar_dados()
 st.set_page_config(layout="wide", page_title="Dashboard de Máquinas")
-st.title("📊 Dashboard de Monitoramento de Máquinas")
+st.title("Dashboard de Monitoramento de Máquinas")
 
 # Abas
 aba1, aba2, aba3, aba4 = st.tabs(["Visão Geral", "Análises Detalhadas", "Correlação e Insights", "Download dos Dados"])
