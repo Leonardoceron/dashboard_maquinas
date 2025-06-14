@@ -19,7 +19,7 @@ def gerar_dados():
         'Sensor2': np.random.normal(75, 15, n),
         'Sensor3': np.random.normal(100, 20, n),
         'Tempo_Operacao': np.random.uniform(100, 500, n),
-        'Data': pd.date_range(start='2025-04-01', periods=n, freq='D'),
+        'Data': pd.date_range(start='2025-01-01', periods=n, freq='D'),
     })
     dados['Necessita_Manutencao'] = np.where((dados['Sensor1'] > 70) | (dados['Status'] == 'Falha'), 'Sim', 'Não')
     return dados
